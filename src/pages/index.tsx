@@ -1,7 +1,8 @@
 // si el usuario no esta autenticado mostrar login
 // si el usuario esta autenticado mostrar formulario para crear un proyecto
 // ver la lista de los ultimos 5 proyectos creado
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import styles from "../styles/Home.module.css";
 import axios from "axios";
 import Login from "./login";
 
@@ -40,6 +41,7 @@ export default function Home() {
 
       setIsLoggedIn(true);
       setSessionToken(data.token);
+      getProject();
       refrescarPagina();
     } catch (error) {
       alert(error);
@@ -48,14 +50,10 @@ export default function Home() {
    
   const [token, setToken] = useState("");
 
-  const [createProjectFrom, setCreateProjectFrom] = useState({
-    projectName: "",
-    imageUrl: "",
-  });
-
-  const handleProjectFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCreateProjectFrom({
-      ...createProjectFrom,
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // ... -> spread operator -> sirve para copiar el valor previo de la variable seleccionada
+    setLoginForm({
+      ...loginForm,
       [e.target.name]: e.target.value,
     });
   };
@@ -79,6 +77,47 @@ export default function Home() {
   };
 
   const [project, setProject] = useState([]);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    getProject();
+  }, []);
+
+
+  const [createProjectFrom, setCreateProjectFrom] = useState({
+    projectName: "",
+    imageUrl: "",
+  });
+
+  const getProject = async () => {
+    try {
+      const { data } = await axios.get("/api/projects", {
+        headers: {
+          token: sessionToken,
+        },
+      });
+      //  data = await data();
+      setProject(data.data);
+
+      console.log("Esta es mi data");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleProjectFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCreateProjectFrom({
+      ...createProjectFrom,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  
+
+  
 
   if (token)
     return (

@@ -1,6 +1,8 @@
 import styles from "../styles/Home.module.css";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
+
+export default function Login(){
 const [sessionToken, setSessionToken] = useState("");
 const [token, setToken] = useState("");
 const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -102,7 +104,6 @@ const handleSubmit = async () => {
 };
 
  
- export default function Login(){
   return(
     <div className={styles.loginContainer}>
         <h2>Login</h2>
