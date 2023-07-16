@@ -218,12 +218,7 @@ export default function Home() {
     );
 
   return (
-    
-     function log() {
-      return (
-        <Login />
-      )
-     }
+        <Login /> 
   );
 }
  
