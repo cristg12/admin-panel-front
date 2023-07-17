@@ -2,7 +2,6 @@
 // si el usuario esta autenticado mostrar formulario para crear un proyecto
 // ver la lista de los ultimos 5 proyectos creado
 import { ChangeEvent, useEffect, useState } from "react";
-import styles from "../styles/Home.module.css";
 import axios from "axios";
 import Login from "./login";
 
@@ -10,59 +9,13 @@ import Login from "./login";
 
 export default function Home() {
   //logica de react
-  const [sessionToken, setSessionToken] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginForm, setLoginForm] = useState({
-    username: "",
-    password: "",
-  });
-
-  
-
-  function refrescarPagina() {
-    location.reload();
-  }
-
-  const handleSubmit = async () => {
-    if (loginForm.username.length <= 0)
-      return alert("el username no puede estar vacio");
-    if (loginForm.password.length <= 0)
-      return alert("el password no puede estar vacio");
-
-    try {
-      const { data } = await axios.post("/api/login", loginForm);
-      // data nos retornara si el login ha sido correcto y un token de sesion de ser asi
-      console.log(data);
-      localStorage.setItem("token", data.token);
-      setLoginForm({
-        password: "",
-        username: "",
-      });
-
-      setIsLoggedIn(true);
-      setSessionToken(data.token);
-      getProject();
-      refrescarPagina();
-    } catch (error) {
-      alert(error);
-    }
-  };
-   
   const [token, setToken] = useState("");
-
-  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // ... -> spread operator -> sirve para copiar el valor previo de la variable seleccionada
-    setLoginForm({
-      ...loginForm,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const createProject = async () => {
     try {
       const { data } = await axios.post("/api/project", createProjectFrom, {
         headers: {
-          token: sessionToken,
+          token: token,
         },
       });
       setCreateProjectFrom({
@@ -96,7 +49,7 @@ export default function Home() {
     try {
       const { data } = await axios.get("/api/projects", {
         headers: {
-          token: sessionToken,
+          token: token,
         },
       });
       //  data = await data();
@@ -114,10 +67,6 @@ export default function Home() {
       [e.target.name]: e.target.value,
     });
   };
-
-  
-
-  
 
   if (token)
     return (
