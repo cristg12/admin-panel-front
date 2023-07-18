@@ -13,14 +13,16 @@ export default function Home() {
 
   const createProject = async () => {
     try {
-      const { data } = await axios.post("/api/project", createProjectFrom, {
+      const { data } = await axios.post(process.env.NEXT_PUBLIC_API +"/projects", createProjectFrom, {
         headers: {
           token: token,
+          Authorization: 'Bearer  ' + token,
         },
       });
+      getProject();
       setCreateProjectFrom({
-        imageUrl: "",
-        projectName: "",
+        img: "",
+        name: "",
       });
       console.log(data);
       alert("projecto generado");
@@ -41,19 +43,19 @@ export default function Home() {
 
 
   const [createProjectFrom, setCreateProjectFrom] = useState({
-    projectName: "",
-    imageUrl: "",
+    name: "",
+    img: "",
   });
 
   const getProject = async () => {
     try {
-      const { data } = await axios.get("/api/projects", {
+      const { data } = await axios.get(process.env.NEXT_PUBLIC_API + "/projects", {
         headers: {
           token: token,
         },
       });
       //  data = await data();
-      setProject(data.data);
+      setProject(data);
 
       console.log("Esta es mi data");
     } catch (error) {
@@ -75,17 +77,19 @@ export default function Home() {
         <div>
           <label>Nombre de proyecto</label>
           <input
+            className="form-control"
             type="text"
             onChange={(e) => handleProjectFormChange(e)}
-            name="projectName"
-            value={createProjectFrom.projectName}
+            name="name"
+            value={createProjectFrom.name}
           />
           <label>url de la imagen</label>
           <input
+            className="form-control"
             type="text"
             onChange={(e) => handleProjectFormChange(e)}
-            name="imageUrl"
-            value={createProjectFrom.imageUrl}
+            name="img"
+            value={createProjectFrom.img}
           />
           <button onClick={createProject}>create project</button>
         </div>
@@ -94,7 +98,7 @@ export default function Home() {
           <div className="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
             <img
               className="me-3"
-              src="/panelAdmin/admin-panel-front/public/mrc.jpg"
+              src="/public/mrc.jpg"
               alt=""
               width="48"
               height="38"
@@ -111,7 +115,7 @@ export default function Home() {
             {project ? 
               project.map((e: any) => (
                   <div key={e?.id} className="d-flex text-body-secondary pt-3">
-                    <svg
+                    {/* <svg
                       className="bd-placeholder-img flex-shrink-0 me-2 rounded"
                       width="32"
                       height="32"
@@ -126,10 +130,11 @@ export default function Home() {
                       <text x="50%" y="50%" fill="#007bff" dy=".3em">
                         32x32
                       </text>
-                    </svg>
+                    </svg> */}
+                    <img src={e.img} width="32" height="32" alt="" />
                     <p className="pb-3 mb-0 small lh-sm border-bottom">
                       <strong className="d-block text-gray-dark">
-                        {e?.projectName}
+                        {e?.name}
                       </strong>
                       Some representative placeholder content, with some
                       information about this user. Imagine this being some sort
@@ -156,7 +161,7 @@ export default function Home() {
     </h2>
     <div id="collapseOne" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
       <div className="accordion-body">
-        <strong>{e?.projectName}</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+        <strong>{e?.name}</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from "react";
 
 export default function Login(){
 const [loginForm, setLoginForm] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -23,20 +23,21 @@ function refrescarPagina() {
 }
 
 const handleSubmit = async () => {
-  if (loginForm.username.length <= 0)
-    return alert("el username no puede estar vacio");
+  if (loginForm.email.length <= 0)
+    return alert("el email no puede estar vacio");
   if (loginForm.password.length <= 0)
     return alert("el password no puede estar vacio");
 
   try {
-    const { data } = await axios.post("/api/login", loginForm);
+    const { data } = await axios.post(process.env.NEXT_PUBLIC_API + "/auth/login", loginForm);
     // data nos retornara si el login ha sido correcto y un token de sesion de ser asi
     console.log(data);
     localStorage.setItem("token", data.token);
     setLoginForm({
       password: "",
-      username: "",
+      email: "",
     });
+
     
     refrescarPagina();
   } catch (error) {
@@ -49,13 +50,13 @@ const handleSubmit = async () => {
     <div className={styles.loginContainer}>
         <h2>Login</h2>
         <div className={styles.loginFormContainer}>
-          <label>username</label>
+          <label>email</label>
           
           <input
             type="text"
-            name="username"
+            name="email"
             onChange={(e) => handleFormChange(e)}
-            value={loginForm.username}
+            value={loginForm.email}
           />
           <label> password</label>
           <input
@@ -65,9 +66,7 @@ const handleSubmit = async () => {
             value={loginForm.password}
             onChange={(e) => handleFormChange(e)}
           />
-          <button className="btn btn-primary"  onClick={handleSubmit}>
-            Login
-          </button>
+          <button className="btn btn-primary"  onClick={handleSubmit}>Login</button>
         </div>
       </div> 
   )
