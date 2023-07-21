@@ -30,3 +30,12 @@ a {
     color-scheme: dark;
   }
 }
+
+.icon {
+  display: flex;
+  align-items: right;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
