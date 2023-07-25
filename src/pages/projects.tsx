@@ -135,6 +135,10 @@ export default function Projects(props: any) {
     getProject();
   }, []);
 
+   const logOut= () => {
+
+  }
+
   return (
     <div>
       <div className="d-flex">
@@ -214,9 +218,12 @@ export default function Projects(props: any) {
             width="38"
             height="38"
           />
-          <div className="lh-1">
+          <div className="lh-1 col-11">
             <h1 className="h6 mb-0 text-black lh-1">Bootstrap</h1>
             <small className="text-black">Since 2011</small>
+          </div>
+          <div>
+            <button type="button" className="btn btn-primary btn-sm">Logout</button>
           </div>
         </div>
 

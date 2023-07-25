@@ -1,6 +1,7 @@
 import styles from "../styles/Home.module.css";
 import axios from "axios";
 import { ChangeEvent, useState } from "react";
+import Projects from "./projects";
 
 export default function Login(){
 const [loginForm, setLoginForm] = useState({
