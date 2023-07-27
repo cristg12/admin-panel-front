@@ -136,6 +136,9 @@ export default function Projects(props: any) {
   }, []);
 
    const logOut= () => {
+    localStorage.removeItem('token');
+    location.reload();
+
 
   }
 
@@ -223,7 +226,7 @@ export default function Projects(props: any) {
             <small className="text-black">Since 2011</small>
           </div>
           <div>
-            <button type="button" className="btn btn-primary btn-sm">Logout</button>
+            <button type="button" id="logout-btn" onClick={() => logOut()} className="btn btn-primary btn-sm">Logout</button>
           </div>
         </div>
 
